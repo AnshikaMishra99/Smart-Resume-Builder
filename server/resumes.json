@@ -1,0 +1,162 @@
+[
+  {
+    "_id": "1g3201lmw",
+    "personalInfo": {
+      "name": "Anshika Mishra",
+      "location": "Greater Noida, Uttar Pradesh",
+      "phone": "7300728283",
+      "email": "anshikamishra9099@gmail.com",
+      "linkedin": "linkedin.com/in/anshika-mishra",
+      "github": "github.com/anshika-mishra"
+    },
+    "objective": "Motivated and detail-oriented Computer Science student seeking to leverage strong problem-solving skills, academic training, and technical projects to contribute effectively as a aspiring Full Stack Developer. Proven hands-on proficiency in Java, JavaScript, SQL, HTML, CSS. Dedicated to collaborating in technical teams to deliver clean, scalable code and solve complex software challenges.",
+    "education": [
+      {
+        "institution": "G.L. Bajaj Institute of Technology and Management",
+        "degree": "B.Tech",
+        "duration": "2023 - 2027",
+        "details": "SGPA: 8.47"
+      },
+      {
+        "institution": "TRC Memorial Public School",
+        "degree": "Senior Secondary",
+        "duration": "2022",
+        "details": "77%"
+      },
+      {
+        "institution": "Uma Shankar Vidyapeeth",
+        "degree": "High School",
+        "duration": "2020",
+        "details": "94.9%"
+      }
+    ],
+    "skills": {
+      "Programming Languages": "Java, JavaScript, SQL",
+      "Web Development": "HTML, CSS, React",
+      "Backend": "Node.js, Express.js",
+      "Databases": "MongoDB, MySQL",
+      "Concepts": "Data Structures and Algorithms (Object-Oriented Programming (OOP), DBMS, Full-Stack Development",
+      "Tools": "Git, GitHub, VS Code",
+      "Soft Skills": "Problem Solving, Teamwork, Communication"
+    },
+    "projects": [
+      {
+        "title": "Phishing Website Detector Extension",
+        "techStack": "JavaScript, Chrome Extension APIs, REST API Integration, JSON, Web Security Basics",
+        "bullets": [
+          "Built a browser extension to detect phishing websites using URL heuristics, HTTPS/certificate validation, and blacklist APIs.",
+          "Integrated Google Safe Browsing and PhishTank for real-time threat detection.",
+          "Designed a user-friendly warning system to alert users before visiting malicious websites."
+        ]
+      },
+      {
+        "title": "CrowdFix - Smart Civic Issue Reporting System",
+        "techStack": "React, HTML, CSS, REST APIs, Basic System Design",
+        "bullets": [
+          "Conceptualized a civic-tech solution for reporting and tracking public issues using photos, GPS, and AI-based categorization.",
+          "Collaborated with the technical lead to explain system architecture and user flow through clear and structured presentations.",
+          "Designed the project pitch deck and presented the problem, solution, and feasibility during evaluation.",
+          "Focused on improving transparency, prioritization, and accountability in civic issue reporting."
+        ]
+      }
+    ],
+    "achievements": [
+      "Solved 200 problems on LeetCode.",
+      "Participated in Smart India Hackathon.",
+      "Cleared certifications in Data Analytics and Cybersecurity Essentials."
+    ],
+    "activities": [
+      "Presented the Phishing Website Detector Extension during a company visit, explaining the problem statement, detection approach, system workflow, and real-world cybersecurity impact.",
+      "Participated in Smart India Hackathon (SIH), contributing to the development and presentation of CrowdFix, a smart civic issue reporting platform."
+    ],
+    "createdAt": "2026-06-16T05:05:15.743Z",
+    "updatedAt": "2026-06-29T06:00:59.247Z"
+  },
+  {
+    "_id": "xqejk1j93",
+    "personalInfo": {
+      "name": "Anshika Mishra ",
+      "location": "Delhi",
+      "phone": "7364672568",
+      "email": "mishra@gmail.com",
+      "linkedin": "xyz.com",
+      "github": "xyz.com"
+    },
+    "objective": "Motivated and detail-oriented Computer Science student seeking to leverage strong problem-solving skills, academic training, and technical projects to contribute effectively as a aspiring Machine Learning Engineer. Proven hands-on proficiency in Java, Javascript, DBMS, Terraform, Ansible. Dedicated to collaborating in technical teams to deliver clean, scalable code and solve complex software challenges.",
+    "education": [
+      {
+        "institution": "hdweguhed",
+        "degree": "dhcw",
+        "duration": "2631-2636",
+        "details": "8.47"
+      }
+    ],
+    "skills": {
+      "Programming Languages": "Java, Javascript, ",
+      "concepts": "dbms,oops,CN",
+      "Frameworks/Libraries": "Terraform, Ansible, Kubernetes, Docker",
+      "": ""
+    },
+    "projects": [
+      {
+        "title": "phishing website",
+        "techStack": "java",
+        "bullets": [
+          "very good project"
+        ]
+      }
+    ],
+    "achievements": [
+      "solved 200 problems"
+    ],
+    "activities": [
+      "participated in sih"
+    ],
+    "createdAt": "2026-06-16T05:34:05.865Z",
+    "updatedAt": "2026-06-16T10:52:42.661Z"
+  },
+  {
+    "_id": "5m4jlb3eb",
+    "personalInfo": {
+      "name": "Anshika Mishra",
+      "location": "Delhi",
+      "phone": "7364672568",
+      "email": "",
+      "linkedin": "xyz.com",
+      "github": "xyz.com"
+    },
+    "objective": "Motivated and detail-oriented Computer Science student seeking to leverage strong problem-solving skills, academic training, and technical projects to contribute effectively as a aspiring machine learning engineer. leveraging hands-on experience in JavaScript, TypeScript, Python, HTML/CSS, SQL Proven track record of collaborating in technical teams to deliver clean, scalable code and solve complex software challenges.",
+    "education": [
+      {
+        "institution": "hdweguhed",
+        "degree": "dhcw",
+        "duration": "2631-2636",
+        "details": "8.47"
+      }
+    ],
+    "skills": {
+      "Programming Languages": "JavaScript, TypeScript, Python, HTML/CSS, SQL",
+      "Frameworks/Libraries": "React.js, Node.js, Express.js, Next.js, TailwindCSS, Mongoose",
+      "Tools/Platforms": "MongoDB, PostgreSQL, Docker, Git, GitHub, Vercel, AWS",
+      "Concepts": "REST APIs, MVC, Database Design, Client-Server Architecture, SPA, CI/CD"
+    },
+    "projects": [
+      {
+        "title": "phishing website",
+        "techStack": "java",
+        "bullets": [
+          "good project"
+        ]
+      }
+    ],
+    "achievements": [
+      "solved 200 problems"
+    ],
+    "activities": [
+      "participated in sih"
+    ],
+    "color": "#57e64c",
+    "createdAt": "2026-06-16T06:21:21.796Z",
+    "updatedAt": "2026-06-16T06:48:45.324Z"
+  }
+]
