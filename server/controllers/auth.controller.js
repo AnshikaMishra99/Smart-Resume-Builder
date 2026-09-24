@@ -3,11 +3,11 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.model.js";
 
 const generateToken = (id) => {
-  return jwt.sign(
-    { id },
-    process.env.JWT_SECRET || "secret_smart_resume_builder_key_2026",
-    { expiresIn: "30d" }
-  );
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT_SECRET is missing from .env file!");
+  }
+  return jwt.sign({ id }, secret, { expiresIn: "30d" });
 };
 
 // @desc    Register new user

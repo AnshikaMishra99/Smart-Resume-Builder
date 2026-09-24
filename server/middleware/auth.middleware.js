@@ -10,10 +10,11 @@ export const protect = async (req, res, next) => {
   ) {
     try {
       token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET || "secret_smart_resume_builder_key_2026"
-      );
+      const secret = process.env.JWT_SECRET;
+      if (!secret) {
+        throw new Error("JWT_SECRET is missing from .env file!");
+      }
+      const decoded = jwt.verify(token, secret);
 
       const user = await User.findById(decoded.id);
       if (!user) {
