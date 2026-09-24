@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "nd1ew33uk",
+    "name": "Test",
+    "email": "test@example.com",
+    "password": "hashed",
+    "createdAt": "2026-09-24T12:45:38.311Z",
+    "updatedAt": "2026-09-24T12:45:38.311Z"
+  },
+  {
+    "_id": "6flvwlxlk",
+    "name": "Anshika",
+    "email": "anshika_test@example.com",
+    "password": "hashedpassword",
+    "createdAt": "2026-09-24T12:54:28.512Z",
+    "updatedAt": "2026-09-24T12:54:28.512Z"
+  },
+  {
+    "_id": "4iranvyjv",
+    "name": "Anshika Mishra",
+    "email": "anshika.mishra.test1790254489625@gmail.com",
+    "password": "$2b$10$p.HYo//jKotbZHQrxb7QkOjv1moN7VHnlxgsbZezV3bxRnPd0a6vu",
+    "createdAt": "2026-09-24T12:54:49.723Z",
+    "updatedAt": "2026-09-24T12:54:49.724Z"
+  },
+  {
+    "_id": "fzn4c22c7",
+    "name": "Anshika Mishra",
+    "email": "anshika.mishra.live1790255097716@gmail.com",
+    "password": "$2b$10$Q4TqqxE4uQxMwE/25QmjHOkkUsVnwhTK1sJsX1iAEvNsh3SmL9dEy",
+    "createdAt": "2026-09-24T13:04:57.907Z",
+    "updatedAt": "2026-09-24T13:04:57.908Z"
+  },
+  {
+    "_id": "unkbwytgm",
+    "name": "Anshika Mishra",
+    "email": "mishraanshika909@gmail.com",
+    "password": "$2b$10$cViu34tKvoK3gNUlnewvWOtmVHE.CYHX3KxeGGnsNdmguFgKv33QS",
+    "createdAt": "2026-09-24T13:09:56.056Z",
+    "updatedAt": "2026-09-24T13:09:56.056Z"
+  },
+  {
+    "_id": "78dxxpzgx",
+    "name": "Anshika",
+    "email": "anshika90@gmail.com",
+    "password": "$2b$10$napcoSKAi4BkxfWp6o4j1OVsOFXOJgwR5TbygD/rE.TJxo15wWhyq",
+    "createdAt": "2026-09-24T13:11:03.042Z",
+    "updatedAt": "2026-09-24T13:11:03.042Z"
+  }
+]

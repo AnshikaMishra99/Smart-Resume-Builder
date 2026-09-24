@@ -105,7 +105,11 @@ const MockResume = {
   find: (query = {}) => {
     let list = readData();
     if (query && query.userId) {
-      list = list.filter(r => !r.userId || r.userId === query.userId);
+      list = list.filter(r => r.userId === query.userId);
+    } else if (query && Object.keys(query).length > 0) {
+      list = list.filter(r => {
+        return Object.entries(query).every(([k, v]) => r[k] === v);
+      });
     }
     return {
       sort: (sortObj) => {
@@ -153,12 +157,13 @@ const MongooseResume = mongoose.model("Resume", resumeSchema);
 const Resume = new Proxy(MongooseResume, {
   get(target, prop) {
     const isConnected = mongoose.connection.readyState === 1;
-    if (isConnected) {
-      return MongooseResume[prop];
-    } else {
-      return MockResume[prop];
+    const source = isConnected ? target : MockResume;
+    const value = Reflect.get(source, prop);
+    if (typeof value === "function") {
+      return value.bind(source);
     }
-  }
+    return value;
+  },
 });
 
 export default Resume;

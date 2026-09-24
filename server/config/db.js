@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 /**
  * Establishes connection to MongoDB using the URI from environment variables.
@@ -6,11 +9,16 @@ import mongoose from "mongoose";
  */
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI);
+    if (!process.env.MONGO_URI) {
+      throw new Error("MONGO_URI environment variable is not defined");
+    }
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 5000,
+    });
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.warn(`⚠️ MongoDB Connection Error: ${error.message}`);
-    console.log("🔄 Running with local JSON database fallback (resumes.json).");
+    console.log("🔄 Running with local JSON database fallback (resumes.json / users.json).");
   }
 };
 

@@ -36,9 +36,11 @@ const Register = () => {
       navigate("/dashboard");
     } catch (err) {
       console.error("Registration failed:", err);
-      setError(
-        err.response?.data?.message || "Failed to create account. Please try again."
-      );
+      const serverMsg = err.response?.data?.message;
+      const networkOrNoResponseMsg = (!err.response || err.code === "ERR_NETWORK" || err.message === "Network Error")
+        ? "Backend server is unreachable. Please make sure server is running on http://localhost:5000."
+        : "Failed to create account. Please try again.";
+      setError(serverMsg || networkOrNoResponseMsg);
     } finally {
       setSubmitting(false);
     }

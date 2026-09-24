@@ -2,6 +2,15 @@ import Resume from "../models/Resume.model.js";
 import { generateResumePDF } from "../utils/pdfGenerator.js";
 
 /**
+ * Helper to check if logged in user owns the resume
+ */
+const checkOwnership = (resume, userId) => {
+  if (!resume) return false;
+  if (!resume.userId) return true; // Legacy resumes without userId
+  return resume.userId === userId;
+};
+
+/**
  * @desc    Create a new resume
  * @route   POST /api/resumes
  */
@@ -42,6 +51,9 @@ export const getResumeById = async (req, res, next) => {
     if (!resume) {
       return res.status(404).json({ message: "Resume not found" });
     }
+    if (req.user && !checkOwnership(resume, req.user.id)) {
+      return res.status(403).json({ message: "Not authorized to access this resume" });
+    }
     res.status(200).json(resume);
   } catch (error) {
     next(error);
@@ -54,12 +66,17 @@ export const getResumeById = async (req, res, next) => {
  */
 export const updateResume = async (req, res, next) => {
   try {
+    const existing = await Resume.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ message: "Resume not found" });
+    }
+    if (req.user && !checkOwnership(existing, req.user.id)) {
+      return res.status(403).json({ message: "Not authorized to modify this resume" });
+    }
+
     const resume = await Resume.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    if (!resume) {
-      return res.status(404).json({ message: "Resume not found" });
-    }
     res.status(200).json(resume);
   } catch (error) {
     next(error);
@@ -75,6 +92,9 @@ export const downloadResumePDF = async (req, res, next) => {
     const resume = await Resume.findById(req.params.id);
     if (!resume) {
       return res.status(404).json({ message: "Resume not found" });
+    }
+    if (req.user && !checkOwnership(resume, req.user.id)) {
+      return res.status(403).json({ message: "Not authorized to download this resume" });
     }
 
     const resumeData = typeof resume.toObject === "function" ? resume.toObject() : { ...resume };
@@ -111,10 +131,15 @@ export const downloadResumePDF = async (req, res, next) => {
  */
 export const deleteResume = async (req, res, next) => {
   try {
-    const resume = await Resume.findByIdAndDelete(req.params.id);
-    if (!resume) {
+    const existing = await Resume.findById(req.params.id);
+    if (!existing) {
       return res.status(404).json({ message: "Resume not found" });
     }
+    if (req.user && !checkOwnership(existing, req.user.id)) {
+      return res.status(403).json({ message: "Not authorized to delete this resume" });
+    }
+
+    await Resume.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Resume deleted successfully" });
   } catch (error) {
     next(error);

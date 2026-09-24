@@ -158,5 +158,15 @@
     "color": "#57e64c",
     "createdAt": "2026-06-16T06:21:21.796Z",
     "updatedAt": "2026-06-16T06:48:45.324Z"
+  },
+  {
+    "_id": "s2wahezn0",
+    "userId": "123",
+    "personalInfo": {
+      "name": "Test",
+      "email": "test@example.com"
+    },
+    "createdAt": "2026-09-24T12:54:28.529Z",
+    "updatedAt": "2026-09-24T12:54:28.529Z"
   }
 ]

@@ -75,11 +75,12 @@ const MongooseUser = mongoose.model("User", userSchema);
 const User = new Proxy(MongooseUser, {
   get(target, prop) {
     const isConnected = mongoose.connection.readyState === 1;
-    if (isConnected) {
-      return MongooseUser[prop];
-    } else {
-      return MockUser[prop];
+    const source = isConnected ? target : MockUser;
+    const value = Reflect.get(source, prop);
+    if (typeof value === "function") {
+      return value.bind(source);
     }
+    return value;
   },
 });
 
