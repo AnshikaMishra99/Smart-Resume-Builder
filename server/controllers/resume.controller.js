@@ -7,7 +7,11 @@ import { generateResumePDF } from "../utils/pdfGenerator.js";
  */
 export const createResume = async (req, res, next) => {
   try {
-    const resume = await Resume.create(req.body);
+    const resumeData = {
+      ...req.body,
+      userId: req.user ? req.user.id : null,
+    };
+    const resume = await Resume.create(resumeData);
     res.status(201).json(resume);
   } catch (error) {
     next(error);
@@ -15,12 +19,13 @@ export const createResume = async (req, res, next) => {
 };
 
 /**
- * @desc    Get all resumes (for dashboard list view)
+ * @desc    Get user's resumes
  * @route   GET /api/resumes
  */
 export const getResumes = async (req, res, next) => {
   try {
-    const resumes = await Resume.find().sort({ createdAt: -1 });
+    const query = req.user ? { userId: req.user.id } : {};
+    const resumes = await Resume.find(query).sort({ createdAt: -1 });
     res.status(200).json(resumes);
   } catch (error) {
     next(error);
@@ -72,13 +77,13 @@ export const downloadResumePDF = async (req, res, next) => {
       return res.status(404).json({ message: "Resume not found" });
     }
 
-    const resumeData = resume.toObject();
+    const resumeData = typeof resume.toObject === "function" ? resume.toObject() : { ...resume };
     
     // Safely convert skills Map/Object to a plain object
     let skillsObj = {};
     if (resume.skills instanceof Map) {
       skillsObj = Object.fromEntries(resume.skills);
-    } else if (resume.skills && typeof resume.skills === 'object') {
+    } else if (resume.skills && typeof resume.skills === "object") {
       skillsObj = resume.skills;
     }
     resumeData.skills = skillsObj;
@@ -87,7 +92,7 @@ export const downloadResumePDF = async (req, res, next) => {
 
     res.set({
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${resumeData.personalInfo.name.replace(
+      "Content-Disposition": `attachment; filename="${(resumeData.personalInfo?.name || "Resume").replace(
         /\s+/g,
         "_"
       )}_Resume.pdf"`,

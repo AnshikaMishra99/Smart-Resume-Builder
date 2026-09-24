@@ -26,6 +26,7 @@ const projectSchema = new mongoose.Schema({
  */
 const resumeSchema = new mongoose.Schema(
   {
+    userId: { type: String, default: null },
     personalInfo: {
       name: { type: String, required: true },
       location: { type: String, default: "" },
@@ -101,8 +102,11 @@ const MockResume = {
     writeData(list);
     return createMockInstance(newResume);
   },
-  find: () => {
-    const list = readData();
+  find: (query = {}) => {
+    let list = readData();
+    if (query && query.userId) {
+      list = list.filter(r => !r.userId || r.userId === query.userId);
+    }
     return {
       sort: (sortObj) => {
         const sorted = [...list].sort((a, b) => {

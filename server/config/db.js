@@ -9,7 +9,7 @@ const connectDB = async () => {
     const conn = await mongoose.connect(process.env.MONGO_URI);
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.warn(`⚠️ MongoDB Connection Error to ${process.env.MONGO_URI}: ${error.message}`);
+    console.warn(`⚠️ MongoDB Connection Error: ${error.message}`);
     console.log("🔄 Running with local JSON database fallback (resumes.json).");
   }
 };
