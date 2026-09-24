@@ -46,5 +46,13 @@
     "password": "$2b$10$napcoSKAi4BkxfWp6o4j1OVsOFXOJgwR5TbygD/rE.TJxo15wWhyq",
     "createdAt": "2026-09-24T13:11:03.042Z",
     "updatedAt": "2026-09-24T13:11:03.042Z"
+  },
+  {
+    "_id": "8r5e12b0r",
+    "name": "shbxjas",
+    "email": "anshik@gmail.com",
+    "password": "$2b$10$HrHAWzIIdWiI3jM030lkZ.nYMcV0/CZ.Hdjy35hnWiRo/sO2u4nqy",
+    "createdAt": "2026-09-24T13:32:41.327Z",
+    "updatedAt": "2026-09-24T13:32:41.327Z"
   }
 ]

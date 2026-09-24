@@ -26,9 +26,11 @@ const Login = () => {
       navigate(from, { replace: true });
     } catch (err) {
       console.error("Login failed:", err);
-      setError(
-        err.response?.data?.message || "Failed to log in. Please check your credentials."
-      );
+      const serverMsg = err.response?.data?.message;
+      const networkOrNoResponseMsg = (!err.response || err.code === "ERR_NETWORK" || err.message === "Network Error")
+        ? "Backend server is unreachable. Please make sure server is running on http://localhost:5000."
+        : "Failed to log in. Please check your credentials.";
+      setError(serverMsg || networkOrNoResponseMsg);
     } finally {
       setSubmitting(false);
     }
