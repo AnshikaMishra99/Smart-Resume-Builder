@@ -8,8 +8,13 @@ export const protect = async (req, res, next) => {
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
+    token = req.headers.authorization.split(" ")[1];
+  } else if (req.query && req.query.token) {
+    token = req.query.token;
+  }
+
+  if (token) {
     try {
-      token = req.headers.authorization.split(" ")[1];
       const secret = process.env.JWT_SECRET;
       if (!secret) {
         throw new Error("JWT_SECRET is missing from .env file!");
@@ -34,7 +39,5 @@ export const protect = async (req, res, next) => {
     }
   }
 
-  if (!token) {
-    return res.status(401).json({ message: "Not authorized, no token provided" });
-  }
+  return res.status(401).json({ message: "Not authorized, no token provided" });
 };

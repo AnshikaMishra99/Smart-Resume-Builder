@@ -81,5 +81,36 @@
     },
     "createdAt": "2026-09-24T12:54:28.529Z",
     "updatedAt": "2026-09-24T12:54:28.529Z"
+  },
+  {
+    "_id": "8oz158du8",
+    "personalInfo": {
+      "name": "Anshika Mishra",
+      "location": "jujmbh",
+      "phone": "779900766",
+      "email": "mishraanshika909@gmail.com",
+      "linkedin": "dtyuyuii",
+      "github": "iuughftttt"
+    },
+    "objective": "",
+    "education": [],
+    "skills": {},
+    "projects": [],
+    "achievements": [],
+    "activities": [],
+    "color": "#4F46E5",
+    "userId": "bjgtrwb7u",
+    "createdAt": "2026-09-24T13:58:26.783Z",
+    "updatedAt": "2026-09-24T13:58:54.880Z"
+  },
+  {
+    "_id": "02orl30ar",
+    "userId": "unkbwytgm",
+    "personalInfo": {
+      "name": "Anshika Mishra",
+      "email": "mishraanshika909@gmail.com"
+    },
+    "createdAt": "2026-09-24T14:09:46.149Z",
+    "updatedAt": "2026-09-24T14:09:46.150Z"
   }
 ]

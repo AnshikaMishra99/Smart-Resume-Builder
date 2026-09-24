@@ -136,17 +136,35 @@ const Builder = () => {
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!id) {
       setSaveStatus("Please save your resume before downloading.");
       setTimeout(() => setSaveStatus(""), 3000);
       return;
     }
+    setDownloading(true);
     try {
-      const downloadUrl = `${api.defaults.baseURL || "http://localhost:5000/api"}/resumes/${id}/download`;
-      window.location.href = downloadUrl;
+      const res = await api.get(`/resumes/${id}/download`, {
+        responseType: "blob",
+      });
+      const blob = new Blob([res.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute(
+        "download",
+        `${(resumeData.personalInfo?.name || "Resume").replace(/\s+/g, "_")}_Resume.pdf`
+      );
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Download failed:", err);
+      setSaveStatus("Failed to download PDF. Please try again.");
+      setTimeout(() => setSaveStatus(""), 3000);
+    } finally {
+      setDownloading(false);
     }
   };
 

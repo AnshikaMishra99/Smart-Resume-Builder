@@ -62,5 +62,13 @@
     "password": "$2b$10$Ta3LO.gBQbbLOflTZzEOHuxgBRObBmmC30UBaBdKAdbLOsjwwq.he",
     "createdAt": "2026-09-24T13:49:59.577Z",
     "updatedAt": "2026-09-24T13:49:59.578Z"
+  },
+  {
+    "_id": "bjgtrwb7u",
+    "name": "Arya",
+    "email": "arya@gmail.com",
+    "password": "$2b$10$LuFtmXDtX1CRmQwbQyoWReddymfaL6g/Os9tFQy8VXH3nagXM9oxm",
+    "createdAt": "2026-09-24T13:58:10.379Z",
+    "updatedAt": "2026-09-24T13:58:10.379Z"
   }
 ]

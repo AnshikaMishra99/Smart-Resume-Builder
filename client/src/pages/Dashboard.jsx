@@ -40,12 +40,27 @@ const Dashboard = () => {
     }
   };
 
-  const handleDownload = (id) => {
+  const handleDownload = async (id) => {
+    setDownloadingId(id);
     try {
-      const downloadUrl = `${api.defaults.baseURL || "http://localhost:5000/api"}/resumes/${id}/download`;
-      window.location.href = downloadUrl;
+      const res = await api.get(`/resumes/${id}/download`, {
+        responseType: "blob",
+      });
+      const blob = new Blob([res.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      const targetResume = resumes.find((r) => r._id === id);
+      const name = targetResume?.personalInfo?.name || "Resume";
+      link.setAttribute("download", `${name.replace(/\s+/g, "_")}_Resume.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Download failed:", err);
+    } finally {
+      setDownloadingId(null);
     }
   };
 
