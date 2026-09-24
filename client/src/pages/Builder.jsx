@@ -137,32 +137,49 @@ const Builder = () => {
   };
 
   const handleDownload = async () => {
-    if (!id) {
-      setSaveStatus("Please save your resume before downloading.");
-      setTimeout(() => setSaveStatus(""), 3000);
-      return;
-    }
     setDownloading(true);
+    setSaveStatus("");
     try {
-      const res = await api.get(`/resumes/${id}/download`, {
+      let targetId = id || lastSavedIdRef.current;
+      // Auto-save form data before downloading PDF
+      if (targetId) {
+        await api.put(`/resumes/${targetId}`, data);
+      } else {
+        const res = await api.post("/resumes", data);
+        targetId = res.data._id;
+        lastSavedIdRef.current = targetId;
+        navigate(`/builder/${targetId}`, { replace: true });
+      }
+
+      const res = await api.get(`/resumes/${targetId}/download`, {
         responseType: "blob",
       });
       const blob = new Blob([res.data], { type: "application/pdf" });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute(
-        "download",
-        `${(resumeData.personalInfo?.name || "Resume").replace(/\s+/g, "_")}_Resume.pdf`
-      );
+      const filename = `${(data.personalInfo?.name || "Resume").replace(/\s+/g, "_")}_Resume.pdf`;
+      link.setAttribute("download", filename);
       document.body.appendChild(link);
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Download failed:", err);
-      setSaveStatus("Failed to download PDF. Please try again.");
-      setTimeout(() => setSaveStatus(""), 3000);
+      let errorMsg = "Failed to download PDF. Please try again.";
+      if (err.response && err.response.data instanceof Blob) {
+        try {
+          const text = await err.response.data.text();
+          const json = JSON.parse(text);
+          if (json.message) errorMsg = json.message;
+        } catch (e) {
+          // Fallback to default message
+        }
+      } else if (err.response?.data?.message) {
+        errorMsg = err.response.data.message;
+      }
+      setSaveStatus(errorMsg);
+      setTimeout(() => setSaveStatus(""), 4000);
     } finally {
       setDownloading(false);
     }

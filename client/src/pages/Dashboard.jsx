@@ -59,6 +59,17 @@ const Dashboard = () => {
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Download failed:", err);
+      let errorMsg = "Failed to download PDF. Please try again.";
+      if (err.response && err.response.data instanceof Blob) {
+        try {
+          const text = await err.response.data.text();
+          const json = JSON.parse(text);
+          if (json.message) errorMsg = json.message;
+        } catch (e) {}
+      } else if (err.response?.data?.message) {
+        errorMsg = err.response.data.message;
+      }
+      alert(errorMsg);
     } finally {
       setDownloadingId(null);
     }
