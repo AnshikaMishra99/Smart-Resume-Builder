@@ -123,15 +123,17 @@
       "linkedin": "efwfhjiuwe",
       "github": ""
     },
-    "objective": "",
+    "objective": "Motivated and detail-oriented Computer Science student seeking to leverage strong problem-solving skills, academic training, and technical projects to contribute effectively as a aspiring Full Stack Developer. Proven hands-on proficiency in DOM Manipulation, RESTful APIs, Responsive Design, State Management, SPA. Dedicated to collaborating in technical teams to deliver clean, scalable code and solve complex software challenges.",
     "education": [],
-    "skills": {},
+    "skills": {
+      "Concepts": "DOM Manipulation, RESTful APIs, Responsive Design, State Management, SPA"
+    },
     "projects": [],
     "achievements": [],
     "activities": [],
     "color": "#4F46E5",
     "userId": "unkbwytgm",
     "createdAt": "2026-09-24T14:13:33.150Z",
-    "updatedAt": "2026-09-24T14:18:37.349Z"
+    "updatedAt": "2026-09-24T14:23:44.228Z"
   }
 ]
