@@ -1,100 +1,114 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import bcrypt from "bcryptjs";
 import connectDB from "./config/db.js";
+import User from "./models/User.model.js";
 import Resume from "./models/Resume.model.js";
 
 dotenv.config();
 
 /**
- * Seed data matching the reference resume image exactly,
- * with LinkedIn and GitHub added to personalInfo.
- * Replace the placeholder URLs with your actual profiles.
+ * Sample resume data with anonymized/fake personal details.
  */
-const seedResume = {
+const sampleResumeData = {
   personalInfo: {
-    name: "Anshika Mishra",
-    location: "Greater Noida, Uttar Pradesh",
-    phone: "7300728283",
-    email: "anshikamishra9099@gmail.com",
-    linkedin: "linkedin.com/in/anshika-mishra",
-    github: "github.com/anshika-mishra",
+    name: "Alex Morgan",
+    location: "San Francisco, CA",
+    phone: "+1 (555) 019-2834",
+    email: "alex.morgan@example.com",
+    linkedin: "linkedin.com/in/alex-morgan-demo",
+    github: "github.com/alex-morgan-demo",
   },
   objective:
-    "Detail-oriented Computer Science student seeking an opportunity to leverage strong problem-solving skills, programming knowledge, and project experience to contribute effectively to a dynamic software development team.",
+    "Motivated and detail-oriented Computer Science student seeking to leverage strong problem-solving skills, programming knowledge, and full-stack project experience in a dynamic software engineering team.",
   education: [
     {
-      institution: "G.L. Bajaj Institute of Technology and Management",
-      degree: "B.Tech",
+      institution: "State University of Technology",
+      degree: "B.S. in Computer Science",
       duration: "2023 - 2027",
-      details: "SGPA: 6.47",
+      details: "GPA: 3.8 / 4.0",
     },
     {
-      institution: "TRC Memorial Public School",
-      degree: "Senior Secondary",
-      duration: "2022",
-      details: "77%",
-    },
-    {
-      institution: "Uma Shankar Vidyapeeth",
-      degree: "High School",
-      duration: "2020",
-      details: "94.9%",
+      institution: "Central High School",
+      degree: "High School Diploma",
+      duration: "2019 - 2023",
+      details: "Valedictorian (95%)",
     },
   ],
   skills: {
-    "Programming Languages": "Java, JavaScript, SQL",
-    "Web Development": "HTML, CSS, React",
-    "Backend": "Node.js, Express.js",
-    "Databases": "MongoDB, MySQL",
-    "Concepts": "Data Structures and Algorithms (Object-Oriented Programming (OOP), DBMS, Full-Stack Development",
-    "Tools": "Git, GitHub, VS Code",
-    "Soft Skills": "Problem Solving, Teamwork, Communication",
+    "Programming Languages": "JavaScript, Python, Java, SQL",
+    "Web Development": "React, HTML5, CSS3, Tailwind CSS",
+    "Backend & APIs": "Node.js, Express.js, RESTful APIs, JWT Auth",
+    "Databases": "MongoDB, PostgreSQL",
+    "Tools & Platforms": "Git, GitHub, Docker, Postman, VS Code",
+    "Soft Skills": "Problem Solving, Communication, Team Collaboration",
   },
   projects: [
     {
       title: "Phishing Website Detector Extension",
-      techStack: "JavaScript, Chrome Extension APIs, REST API Integration, JSON, Web Security Basics",
+      techStack: "JavaScript, Chrome Extension APIs, REST API Integration, Web Security",
       bullets: [
         "Built a browser extension to detect phishing websites using URL heuristics, HTTPS/certificate validation, and blacklist APIs.",
-        "Integrated Google Safe Browsing and PhishTank for real-time threat detection.",
-        "Designed a user-friendly warning system to alert users before visiting malicious websites.",
+        "Integrated threat intelligence APIs for real-time URL classification and safety scoring.",
+        "Designed a user-friendly modal warning system to alert users before visiting malicious web pages.",
       ],
     },
     {
-      title: "CrowdFix - Smart Civic Issue Reporting System",
-      techStack: "React, HTML, CSS, REST APIs, Basic System Design",
+      title: "Smart Civic Issue Reporting System",
+      techStack: "React, Node.js, Express, MongoDB, Tailwind CSS",
       bullets: [
-        "Conceptualized a civic-tech solution for reporting and tracking public issues using photos, GPS, and AI-based categorization.",
-        "Collaborated with the technical lead to explain system architecture and user flow through clear and structured presentations.",
-        "Designed the project pitch deck and presented the problem, solution, and feasibility during evaluation.",
-        "Focused on improving transparency, prioritization, and accountability in civic issue reporting.",
+        "Developed a civic-tech web platform for reporting and tracking public infrastructure issues using photo uploads and geolocation.",
+        "Implemented secure JWT authentication and role-based views for citizens and municipal administrators.",
+        "Designed responsive REST endpoints and database schemas for issue ticket lifecycles.",
       ],
     },
   ],
   achievements: [
-    "Solved 200 problems on LeetCode.",
-    "Participated in Smart India Hackathon.",
-    "Cleared certifications in Data Analytics and Cybersecurity Essentials.",
+    "Solved 200+ algorithmic problems on LeetCode.",
+    "First-place winner at Regional University Hackathon 2025.",
+    "Certified AWS Certified Cloud Practitioner.",
   ],
   activities: [
-    "Presented the Phishing Website Detector Extension during a company visit, explaining the problem statement, detection approach, system workflow, and real-world cybersecurity impact.",
-    "Participated in Smart India Hackathon (SIH), contributing to the development and presentation of CrowdFix, a smart civic issue reporting platform.",
+    "Tech Lead at University Open Source Developer Club.",
+    "Active contributor to community web accessibility projects.",
   ],
+  color: "#4F46E5",
 };
 
 /**
- * Connects to MongoDB, clears existing resumes (optional), and inserts
- * the seed resume. Run with: node seed.js
+ * Run Seed script:
+ * Creates demo user (email: demo@example.com, password: demo123)
+ * and attaches the sample resume to it.
  */
 const runSeed = async () => {
   await connectDB();
 
   try {
-    // Optional: remove this line if you want to keep existing resumes
-    await Resume.deleteMany({});
+    const demoEmail = "demo@example.com";
+    const demoPassword = "demo123";
 
-    const created = await Resume.create(seedResume);
-    console.log("✅ Seed resume created with ID:", created._id.toString());
+    // Delete existing demo user if present to ensure clean seed
+    await User.deleteMany({ email: demoEmail });
+
+    const hashedPassword = await bcrypt.hash(demoPassword, 10);
+    const demoUser = await User.create({
+      name: "Demo User",
+      email: demoEmail,
+      password: hashedPassword,
+    });
+
+    console.log(`✅ Demo User created: ${demoUser.email} (Password: ${demoPassword})`);
+
+    // Delete existing resumes for demo user
+    await Resume.deleteMany({ user: demoUser._id });
+
+    const createdResume = await Resume.create({
+      ...sampleResumeData,
+      user: demoUser._id,
+    });
+
+    console.log("✅ Seed resume created with ID:", createdResume._id.toString());
+    console.log("🎉 Seeding complete!");
   } catch (error) {
     console.error("❌ Seeding failed:", error.message);
   } finally {

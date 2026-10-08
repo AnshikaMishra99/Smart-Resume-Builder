@@ -1,11 +1,11 @@
 import { Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
-import { Sparkles, LayoutDashboard, FilePlus2, LogOut, User as UserIcon, LogIn } from "lucide-react";
+import { Sparkles, LayoutDashboard, FilePlus2, LogOut } from "lucide-react";
 import Dashboard from "./pages/Dashboard.jsx";
 import Builder from "./pages/Builder.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
+import { useAuth } from "./context/AuthContext.jsx";
 
 /**
  * Top navigation bar shown on authenticated pages.
@@ -99,7 +99,7 @@ const Navbar = () => {
   );
 };
 
-const AppContent = () => {
+const App = () => {
   const location = useLocation();
   const isAuthPage = ["/login", "/register"].includes(location.pathname);
 
@@ -145,14 +145,6 @@ const AppContent = () => {
         </Routes>
       </main>
     </div>
-  );
-};
-
-const App = () => {
-  return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
   );
 };
 

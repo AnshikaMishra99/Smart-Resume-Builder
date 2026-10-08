@@ -2,103 +2,94 @@ import Resume from "../models/Resume.model.js";
 import { generateResumePDF } from "../utils/pdfGenerator.js";
 
 /**
- * Helper to check if logged in user owns the resume
- */
-const checkOwnership = (resume, userId) => {
-  if (!resume) return false;
-  if (!resume.userId) return true; // Legacy resumes without userId
-  return resume.userId === userId;
-};
-
-/**
- * @desc    Create a new resume
+ * @desc    Create a new resume for the logged-in user
  * @route   POST /api/resumes
+ * @access  Private
  */
 export const createResume = async (req, res, next) => {
   try {
     const resumeData = {
       ...req.body,
-      userId: req.user ? req.user.id : null,
+      user: req.user._id,
     };
     const resume = await Resume.create(resumeData);
-    res.status(201).json(resume);
+    return res.status(201).json(resume);
   } catch (error) {
     next(error);
   }
 };
 
 /**
- * @desc    Get user's resumes
+ * @desc    Get all resumes belonging to logged-in user
  * @route   GET /api/resumes
+ * @access  Private
  */
 export const getResumes = async (req, res, next) => {
   try {
-    const query = req.user ? { userId: req.user.id } : {};
-    const resumes = await Resume.find(query).sort({ createdAt: -1 });
-    res.status(200).json(resumes);
+    const resumes = await Resume.find({ user: req.user._id }).sort({ createdAt: -1 });
+    return res.status(200).json(resumes);
   } catch (error) {
     next(error);
   }
 };
 
 /**
- * @desc    Get a single resume by ID
+ * @desc    Get a single resume by ID (user owned)
  * @route   GET /api/resumes/:id
+ * @access  Private
  */
 export const getResumeById = async (req, res, next) => {
   try {
-    const resume = await Resume.findById(req.params.id);
+    const resume = await Resume.findOne({ _id: req.params.id, user: req.user._id });
     if (!resume) {
       return res.status(404).json({ message: "Resume not found" });
     }
-    if (req.user && !checkOwnership(resume, req.user.id)) {
-      return res.status(403).json({ message: "Not authorized to access this resume" });
-    }
-    res.status(200).json(resume);
+    return res.status(200).json(resume);
   } catch (error) {
     next(error);
   }
 };
 
 /**
- * @desc    Update an existing resume
+ * @desc    Update an existing resume (user owned)
  * @route   PUT /api/resumes/:id
+ * @access  Private
  */
 export const updateResume = async (req, res, next) => {
   try {
-    const existing = await Resume.findById(req.params.id);
-    if (!existing) {
+    const updateData = { ...req.body };
+    delete updateData.user;
+
+    const resume = await Resume.findOneAndUpdate(
+      { _id: req.params.id, user: req.user._id },
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!resume) {
       return res.status(404).json({ message: "Resume not found" });
     }
-    if (req.user && !checkOwnership(existing, req.user.id)) {
-      return res.status(403).json({ message: "Not authorized to modify this resume" });
-    }
 
-    const resume = await Resume.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-    res.status(200).json(resume);
+    return res.status(200).json(resume);
   } catch (error) {
     next(error);
   }
 };
 
 /**
- * @desc    Generate and download a resume as PDF
+ * @desc    Generate and download a resume as PDF (user owned)
  * @route   GET /api/resumes/:id/download
+ * @access  Private
  */
 export const downloadResumePDF = async (req, res, next) => {
   try {
-    const resume = await Resume.findById(req.params.id);
+    const resume = await Resume.findOne({ _id: req.params.id, user: req.user._id });
     if (!resume) {
       return res.status(404).json({ message: "Resume not found" });
     }
-    if (req.user && !checkOwnership(resume, req.user.id)) {
-      return res.status(403).json({ message: "Not authorized to download this resume" });
-    }
 
     const resumeData = typeof resume.toObject === "function" ? resume.toObject() : { ...resume };
-    
+
     // Safely convert skills Map/Object to a plain object
     let skillsObj = {};
     if (resume.skills instanceof Map) {
@@ -119,28 +110,25 @@ export const downloadResumePDF = async (req, res, next) => {
       "Content-Length": pdfBuffer.length,
     });
 
-    res.send(pdfBuffer);
+    return res.send(pdfBuffer);
   } catch (error) {
     next(error);
   }
 };
 
 /**
- * @desc    Delete a resume
+ * @desc    Delete a resume (user owned)
  * @route   DELETE /api/resumes/:id
+ * @access  Private
  */
 export const deleteResume = async (req, res, next) => {
   try {
-    const existing = await Resume.findById(req.params.id);
-    if (!existing) {
+    const resume = await Resume.findOneAndDelete({ _id: req.params.id, user: req.user._id });
+    if (!resume) {
       return res.status(404).json({ message: "Resume not found" });
     }
-    if (req.user && !checkOwnership(existing, req.user.id)) {
-      return res.status(403).json({ message: "Not authorized to delete this resume" });
-    }
 
-    await Resume.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Resume deleted successfully" });
+    return res.status(200).json({ message: "Resume deleted successfully" });
   } catch (error) {
     next(error);
   }

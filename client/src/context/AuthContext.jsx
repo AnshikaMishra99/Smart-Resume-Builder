@@ -5,19 +5,23 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("resume_builder_token"));
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
-      if (token) {
+      const storedToken = localStorage.getItem("token");
+      if (storedToken) {
         try {
           const res = await api.get("/auth/me");
-          setUser(res.data.user);
+          // Handle res.data being user object or { user }
+          setUser(res.data.user || res.data);
         } catch (err) {
-          console.error("Failed to restore session:", err);
+          console.error("Failed to restore auth session:", err);
           logout();
         }
+      } else {
+        setUser(null);
       }
       setLoading(false);
     };
@@ -28,7 +32,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     const res = await api.post("/auth/login", { email, password });
     const { token: newToken, user: userData } = res.data;
-    localStorage.setItem("resume_builder_token", newToken);
+    localStorage.setItem("token", newToken);
     setToken(newToken);
     setUser(userData);
     return userData;
@@ -37,20 +41,20 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, password) => {
     const res = await api.post("/auth/register", { name, email, password });
     const { token: newToken, user: userData } = res.data;
-    localStorage.setItem("resume_builder_token", newToken);
+    localStorage.setItem("token", newToken);
     setToken(newToken);
     setUser(userData);
     return userData;
   };
 
   const logout = () => {
-    localStorage.removeItem("resume_builder_token");
+    localStorage.removeItem("token");
     setToken(null);
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, login, register, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

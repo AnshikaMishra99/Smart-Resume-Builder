@@ -1,43 +1,40 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.model.js";
 
+/**
+ * Protect middleware: Verifies Bearer JWT token in Authorization header
+ * and attaches authenticated user (without password) to req.user.
+ */
 export const protect = async (req, res, next) => {
   let token;
 
   if (
     req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
+    req.headers.authorization.startsWith("Bearer ")
   ) {
     token = req.headers.authorization.split(" ")[1];
-  } else if (req.query && req.query.token) {
-    token = req.query.token;
   }
 
-  if (token) {
-    try {
-      const secret = process.env.JWT_SECRET;
-      if (!secret) {
-        throw new Error("JWT_SECRET is missing from .env file!");
-      }
-      const decoded = jwt.verify(token, secret);
+  if (!token) {
+    return res.status(401).json({ message: "Not authorized" });
+  }
 
-      const user = await User.findById(decoded.id);
-      if (!user) {
-        return res.status(401).json({ message: "User no longer exists" });
-      }
-
-      req.user = {
-        id: user._id.toString(),
-        name: user.name,
-        email: user.email,
-      };
-
-      return next();
-    } catch (error) {
-      console.error("Auth Middleware Error:", error.message);
-      return res.status(401).json({ message: "Not authorized, token failed" });
+  try {
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      throw new Error("JWT_SECRET is missing from environment variables!");
     }
-  }
 
-  return res.status(401).json({ message: "Not authorized, no token provided" });
+    const decoded = jwt.verify(token, secret);
+    const user = await User.findById(decoded.id).select("-password");
+
+    if (!user) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    req.user = user;
+    return next();
+  } catch (error) {
+    return res.status(401).json({ message: "Not authorized" });
+  }
 };

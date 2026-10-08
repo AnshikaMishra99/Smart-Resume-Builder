@@ -5,6 +5,12 @@ import dotenv from "dotenv";
 // Load environment variables immediately before module dependencies run
 dotenv.config();
 
+if (!process.env.JWT_SECRET) {
+  console.error("FATAL ERROR: JWT_SECRET is not defined in environment variables!");
+  process.exit(1);
+}
+
+
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
 import resumeRoutes from "./routes/resume.routes.js";

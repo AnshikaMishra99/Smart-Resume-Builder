@@ -5,8 +5,12 @@ import {
   handleSummaryGeneration,
   handleAtsMatch,
 } from "../controllers/ai.controller.js";
+import { protect } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
+
+// Apply auth protection to all AI endpoints
+router.use(protect);
 
 router.post("/review", handleResumeReview);
 router.post("/suggest-skills", handleSkillSuggestion);

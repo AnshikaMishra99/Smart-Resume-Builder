@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Mail, Lock, Eye, EyeOff, Sparkles, AlertCircle, ArrowRight, FileText } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, FileText, KeyRound } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -36,9 +36,14 @@ const Login = () => {
     }
   };
 
+  const handleFillDemo = () => {
+    setEmail("demo@example.com");
+    setPassword("demo123");
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Dynamic Background Glow Effect */}
+      {/* Background Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-violet-600/15 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -54,6 +59,21 @@ const Login = () => {
           <p className="text-slate-400 text-sm mt-1">
             Sign in to access your AI resumes & ATS evaluations
           </p>
+        </div>
+
+        {/* Demo User Helper */}
+        <div className="mb-6 p-3 bg-indigo-950/50 border border-indigo-800/50 rounded-xl flex items-center justify-between text-xs text-indigo-300">
+          <div className="flex items-center gap-2">
+            <KeyRound className="w-4 h-4 text-indigo-400 shrink-0" />
+            <span>Demo: <strong>demo@example.com</strong> / <strong>demo123</strong></span>
+          </div>
+          <button
+            type="button"
+            onClick={handleFillDemo}
+            className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg transition-colors text-xs"
+          >
+            Fill Demo
+          </button>
         </div>
 
         {/* Error Alert */}
